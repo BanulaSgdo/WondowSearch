@@ -10,6 +10,7 @@ You can always use a tool like `ldapsearch` to perform custom LDAP queries again
 ```
 $ git clone https://github.com/BanulaSgdo/WondowSearch.git
 $ pip install python-ldap #or apt-get install python-ldap
+$ sudo chmod +x wondowsearch.py 
 $ ./wondowsearch.py
 ```
 The latest version is designed to be used with Python 3, but if you are stuck with Python 2, you can use the `wondowsearch_py2.py` script.
