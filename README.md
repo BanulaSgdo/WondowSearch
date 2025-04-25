@@ -114,7 +114,7 @@ WARNING: in a large domain this can get very big, very fast
 
 Example:
 ```
-$  ./wondowsearch.py -d lab.test.com -u test\\ldapbind -p sam -U
+$  ./wondowsearch.py -d test.com -u test\\ldapbind -p sam -U
 [+] No DC IP provided. Will try to discover via DNS lookup.
 [+] Using Domain Controller at: 172.16.13.10
 [+] Getting defaultNamingContext from Root DSE
@@ -133,9 +133,8 @@ cn: Guest
 cn: krbtgt
 
 cn: Andy Green
-userPrincipalName: agreen@lab.test.com
+userPrincipalName: agreen@test.com
 
-<snipped...>
 ```
 To save the results to a tab-separated file, use the `-o` option and specify a directory.
 
@@ -146,7 +145,7 @@ To query group membership, use the `-m` option with either the DN or CN of the g
 
 Example:
 ```
-$ ./wondowsearch.py -d lab.test.com -u test\\ldapbind -p sam -m IT               
+$ ./wondowsearch.py -d test.com -u test\\ldapbind -p sam -m IT               
 [+] No DC IP provided. Will try to discover via DNS lookup.                                                       
 [+] Using Domain Controller at: 172.16.13.10                                                                      
 [+] Getting defaultNamingContext from Root DSE                                                                    
@@ -167,9 +166,7 @@ CN=James Doyle,OU=US,OU=Users,OU=Lab,DC=lab,DC=test,DC=com
 CN=Edward Sotelo,OU=US,OU=Users,OU=Lab,DC=lab,DC=test,DC=com                                                    
 CN=Cheryl Perry,OU=US,OU=Users,OU=Lab,DC=lab,DC=test,DC=com                                                     
 CN=Anthony Gordon,OU=US,OU=Users,OU=Lab,DC=lab,DC=test,DC=com                                                   
-CN=Desktop Support,OU=Groups,OU=Lab,DC=lab,DC=test,DC=com                                                       
-                                                                                                                  
-[*] Bye!                                                                                                          
+CN=Desktop Support,OU=Groups,OU=Lab,DC=lab,DC=test,DC=com                                                                                  
 ```
 
 #### Domain Admins
@@ -179,7 +176,7 @@ To do a recursive lookup for Domain Admins, you can use the "--da" option.
 
 Example:
 ```
-root@kali:~/wondowsearch# ./wondowsearch.py -d lab.test.com -u test\\ldapbind -p sam --da
+root@kali:~/wondowsearch# ./wondowsearch.py -d test.com -u test\\ldapbind -p sam --da
 [+] No DC IP provided. Will try to discover via DNS lookup.
 [+] Using Domain Controller at: 172.16.13.10
 [+] Getting defaultNamingContext from Root DSE
@@ -194,15 +191,14 @@ root@kali:~/wondowsearch# ./wondowsearch.py -d lab.test.com -u test\\ldapbind -p
 cn: Administrator
 
 cn: Andy Green
-userPrincipalName: agreen@lab.test.com
+userPrincipalName: agreen@test.com
 
 cn: Natasha Strong
-userPrincipalName: nstrong@lab.test.com
+userPrincipalName: nstrong@test.com
 
 cn: Linda Alton
-userPrincipalName: lalton@lab.test.com
+userPrincipalName: lalton@test.com
 
-<snipped...>
 ```
 
 ### Enumerating Computers
@@ -214,7 +210,7 @@ If you specify the `-r` or `--resolve` option, the tool will perform a DNS looku
 
 Example:
 ```
-$ ./wondowsearch.py -d lab.test.com -u test\\ldapbind -p sam -C -r
+$ ./wondowsearch.py -d test.com -u test\\ldapbind -p sam -C -r
 [+] No DC IP provided. Will try to discover via DNS lookup.
 [+] Using Domain Controller at: 172.16.13.10
 [+] Getting defaultNamingContext from Root DSE
@@ -227,19 +223,18 @@ $ ./wondowsearch.py -d lab.test.com -u test\\ldapbind -p sam -C -r
 [+]     Found 4 computers:
 
 cn, IP, dNSHostName, operatingSystem, operatingSystemVersion, operatingSystemServicePack
-WS03WIN10,172.16.13.53,ws03win10.lab.test.com,Windows 10 Enterprise,10.0 (10240),
-WS02WIN7,172.16.13.50,WS02WIN7.lab.test.com,Windows 7 Enterprise,6.1 (7601),Service Pack 1
-WS01WIN7,172.16.13.52,WS01WIN7.lab.test.com,Windows 7 Enterprise,6.1 (7601),Service Pack 1
-DC01,172.16.13.10,dc01.lab.test.com,Windows Server 2012 R2 Standard,6.3 (9600),
-
-[*] Bye!                               
+WS03WIN10,172.16.13.53,ws03win10.test.com,Windows 10 Enterprise,10.0 (10240),
+WS02WIN7,172.16.13.50,WS02WIN7.test.com,Windows 7 Enterprise,6.1 (7601),Service Pack 1
+WS01WIN7,172.16.13.52,WS01WIN7.test.com,Windows 7 Enterprise,6.1 (7601),Service Pack 1
+DC01,172.16.13.10,dc01.test.com,Windows Server 2012 R2 Standard,6.3 (9600),
+                              
 ```
 
 ### Custom Searching
 The tool allows for custom, fuzzy matching. You can perform a search and see results (DNs) with the `-s` option:
 
 ```
-$ ./wondowsearch.py -d lab.test.com -u test\\ldapbind -p sam -s albert
+$ ./wondowsearch.py -d test.com -u test\\ldapbind -p sam -s albert
 [+] No DC IP provided. Will try to discover via DNS lookup.
 [+] Using Domain Controller at: 172.16.13.10
 [+] Getting defaultNamingContext from Root DSE
@@ -257,13 +252,12 @@ CN=Alberta Henshaw,OU=US,OU=Users,OU=Lab,DC=lab,DC=test,DC=com
 CN=Alberta Taylor,OU=US,OU=Users,OU=Lab,DC=lab,DC=test,DC=com
 CN=Alberto Mitchell,OU=US,OU=Users,OU=Lab,DC=lab,DC=test,DC=com
 
-[*] Bye!
 ```
 
 To query the DN and display the attributes, use the lookup option, `-l`. You can provide this with a full DN, or a search term. If the search matches more than one DN, the tool will prompt you for which to use:
 
 ```
-$ ./wondowsearch.py -d lab.test.com -u test\\ldapbind -p sam -l albert --attrs telephoneNumber
+$ ./wondowsearch.py -d test.com -u test\\ldapbind -p sam -l albert --attrs telephoneNumber
 [+] No DC IP provided. Will try to discover via DNS lookup.
 [+] Using Domain Controller at: 172.16.13.10
 [+] Getting defaultNamingContext from Root DSE
