@@ -8,7 +8,7 @@ You can always use a tool like `ldapsearch` to perform custom LDAP queries again
 `wondowsearch` requires the `python-ldap` module. You should be able to get up and running with two commands:
 
 ```
-$ git clone https://github.com/ropnop/wondowsearch.git
+$ git clone https://github.com/BanulaSgdo/WondowSearch.git
 $ pip install python-ldap #or apt-get install python-ldap
 $ ./wondowsearch.py
 ```
