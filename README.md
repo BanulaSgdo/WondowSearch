@@ -275,7 +275,4 @@ $ ./wondowsearch.py -d test.com -u test\\ldapbind -p sam -l albert --attrs telep
 4: CN=Alberta Taylor,OU=US,OU=Users,OU=Lab,DC=lab,DC=test,DC=com
 5: CN=Alberto Mitchell,OU=US,OU=Users,OU=Lab,DC=lab,DC=test,DC=com
 
-
-
-
-
+```
