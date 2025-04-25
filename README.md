@@ -44,7 +44,7 @@ Bind Options:
   Specify bind account. If not specified, anonymous bind will be attempted
 
   -u USER, --user USER  The full username with domain to bind with (e.g.
-                        'ropnop@lab.example.com' or 'LAB\ropnop'
+                        'test@lab.example.com' or 'LAB\test'
   -p PASSWORD, --password PASSWORD
                         Password to use. If not specified, will be prompted
                         for
@@ -102,7 +102,7 @@ To begin you need to specify a Domain Controller to connect to with `--dc-ip`, o
 If no Domain Controller IP address is specified, the script will attempt to do a DNS `host` lookup on the domain and take the top result.
 
 A valid domain username and password are required for most lookups. If none are specififed the script will attempt an anonymous bind and enumerate the default namingContext, but most additional queries will fail.
-The username needs to include the full domain, e.g. `ropnop@lap.example.com` or `EXAMPLE\ropnop`
+The username needs to include the full domain, e.g. `test@lap.example.com` or `EXAMPLE\test`
 
 The password can be specified on the command line with `-p` or if left out it will be prompted for.
 
@@ -114,14 +114,14 @@ WARNING: in a large domain this can get very big, very fast
 
 Example:
 ```
-$  ./wondowsearch.py -d lab.ropnop.com -u ropnop\\ldapbind -p GoCubs16 -U
+$  ./wondowsearch.py -d lab.test.com -u test\\ldapbind -p sam -U
 [+] No DC IP provided. Will try to discover via DNS lookup.
 [+] Using Domain Controller at: 172.16.13.10
 [+] Getting defaultNamingContext from Root DSE
-[+]     Found: DC=lab,DC=ropnop,DC=com
+[+]     Found: DC=lab,DC=test,DC=com
 [+] Attempting bind
 [+]     ...success! Binded as:
-[+]      u:ROPNOP\ldapbind
+[+]      u:test\ldapbind
 
 [+] Enumerating all AD users
 [+]     Found 2754 users:
@@ -133,7 +133,7 @@ cn: Guest
 cn: krbtgt
 
 cn: Andy Green
-userPrincipalName: agreen@lab.ropnop.com
+userPrincipalName: agreen@lab.test.com
 
 <snipped...>
 ```
@@ -146,28 +146,28 @@ To query group membership, use the `-m` option with either the DN or CN of the g
 
 Example:
 ```
-$ ./wondowsearch.py -d lab.ropnop.com -u ropnop\\ldapbind -p GoCubs16 -m IT               
+$ ./wondowsearch.py -d lab.test.com -u test\\ldapbind -p sam -m IT               
 [+] No DC IP provided. Will try to discover via DNS lookup.                                                       
 [+] Using Domain Controller at: 172.16.13.10                                                                      
 [+] Getting defaultNamingContext from Root DSE                                                                    
-[+]     Found: DC=lab,DC=ropnop,DC=com                                                                            
+[+]     Found: DC=lab,DC=test,DC=com                                                                            
 [+] Attempting bind                                                                                               
 [+]     ...success! Binded as:                                                                                    
-[+]      u:ROPNOP\ldapbind                                                                                        
+[+]      u:test\ldapbind                                                                                        
 [+] Attempting to enumerate full DN for group: IT                                                                 
 [+] Found 2 results:                                                                                              
                                                                                                                   
-0: CN=IT Admins,OU=Groups,OU=Lab,DC=lab,DC=ropnop,DC=com                                                          
-1: CN=Ismael Titus,OU=US,OU=Users,OU=Lab,DC=lab,DC=ropnop,DC=com                                                  
+0: CN=IT Admins,OU=Groups,OU=Lab,DC=lab,DC=test,DC=com                                                          
+1: CN=Ismael Titus,OU=US,OU=Users,OU=Lab,DC=lab,DC=test,DC=com                                                  
                                                                                                                   
 Which DN do you want to use? : 0                                                                                  
 [+]      Found 5 members:                                                                                         
                                                                                                                   
-CN=James Doyle,OU=US,OU=Users,OU=Lab,DC=lab,DC=ropnop,DC=com                                                      
-CN=Edward Sotelo,OU=US,OU=Users,OU=Lab,DC=lab,DC=ropnop,DC=com                                                    
-CN=Cheryl Perry,OU=US,OU=Users,OU=Lab,DC=lab,DC=ropnop,DC=com                                                     
-CN=Anthony Gordon,OU=US,OU=Users,OU=Lab,DC=lab,DC=ropnop,DC=com                                                   
-CN=Desktop Support,OU=Groups,OU=Lab,DC=lab,DC=ropnop,DC=com                                                       
+CN=James Doyle,OU=US,OU=Users,OU=Lab,DC=lab,DC=test,DC=com                                                      
+CN=Edward Sotelo,OU=US,OU=Users,OU=Lab,DC=lab,DC=test,DC=com                                                    
+CN=Cheryl Perry,OU=US,OU=Users,OU=Lab,DC=lab,DC=test,DC=com                                                     
+CN=Anthony Gordon,OU=US,OU=Users,OU=Lab,DC=lab,DC=test,DC=com                                                   
+CN=Desktop Support,OU=Groups,OU=Lab,DC=lab,DC=test,DC=com                                                       
                                                                                                                   
 [*] Bye!                                                                                                          
 ```
@@ -175,34 +175,32 @@ CN=Desktop Support,OU=Groups,OU=Lab,DC=lab,DC=ropnop,DC=com
 #### Domain Admins
 You can enumerate Domain Admins through two methods. One is to use `-m` with "Domain Admins". This will query LDAP for the "Domain Admins" entry and display all the members.
 
-The more thorough way is to do a lookup of all users and determine if they or a group they belong to are part of "Domain Admins". This has the added benefit of discovering users who have inherited DA rights through nested group memberships. It's much slower, however.
-See this link for more details on the technique used: https://labs.mwrinfosecurity.com/blog/active-directory-users-in-nested-groups-reconnaissance/
 To do a recursive lookup for Domain Admins, you can use the "--da" option.
 
 Example:
 ```
-root@kali:~/wondowsearch# ./wondowsearch.py -d lab.ropnop.com -u ropnop\\ldapbind -p GoCubs16 --da
+root@kali:~/wondowsearch# ./wondowsearch.py -d lab.test.com -u test\\ldapbind -p sam --da
 [+] No DC IP provided. Will try to discover via DNS lookup.
 [+] Using Domain Controller at: 172.16.13.10
 [+] Getting defaultNamingContext from Root DSE
-[+]     Found: DC=lab,DC=ropnop,DC=com
+[+]     Found: DC=lab,DC=test,DC=com
 [+] Attempting bind
 [+]     ...success! Binded as:
-[+]      u:ROPNOP\ldapbind
+[+]      u:test\ldapbind
 [+] Attempting to enumerate all Domain Admins
-[+] Using DN: CN=Domain Admins,CN=Users.CN=Domain Admins,CN=Users,DC=lab,DC=ropnop,DC=com
+[+] Using DN: CN=Domain Admins,CN=Users.CN=Domain Admins,CN=Users,DC=lab,DC=test,DC=com
 [+]     Found 12 Domain Admins:
 
 cn: Administrator
 
 cn: Andy Green
-userPrincipalName: agreen@lab.ropnop.com
+userPrincipalName: agreen@lab.test.com
 
 cn: Natasha Strong
-userPrincipalName: nstrong@lab.ropnop.com
+userPrincipalName: nstrong@lab.test.com
 
 cn: Linda Alton
-userPrincipalName: lalton@lab.ropnop.com
+userPrincipalName: lalton@lab.test.com
 
 <snipped...>
 ```
@@ -216,23 +214,23 @@ If you specify the `-r` or `--resolve` option, the tool will perform a DNS looku
 
 Example:
 ```
-$ ./wondowsearch.py -d lab.ropnop.com -u ropnop\\ldapbind -p GoCubs16 -C -r
+$ ./wondowsearch.py -d lab.test.com -u test\\ldapbind -p sam -C -r
 [+] No DC IP provided. Will try to discover via DNS lookup.
 [+] Using Domain Controller at: 172.16.13.10
 [+] Getting defaultNamingContext from Root DSE
-[+]     Found: DC=lab,DC=ropnop,DC=com
+[+]     Found: DC=lab,DC=test,DC=com
 [+] Attempting bind
 [+]     ...success! Binded as:
-[+]      u:ROPNOP\ldapbind
+[+]      u:test\ldapbind
 
 [+] Enumerating all AD computers
 [+]     Found 4 computers:
 
 cn, IP, dNSHostName, operatingSystem, operatingSystemVersion, operatingSystemServicePack
-WS03WIN10,172.16.13.53,ws03win10.lab.ropnop.com,Windows 10 Enterprise,10.0 (10240),
-WS02WIN7,172.16.13.50,WS02WIN7.lab.ropnop.com,Windows 7 Enterprise,6.1 (7601),Service Pack 1
-WS01WIN7,172.16.13.52,WS01WIN7.lab.ropnop.com,Windows 7 Enterprise,6.1 (7601),Service Pack 1
-DC01,172.16.13.10,dc01.lab.ropnop.com,Windows Server 2012 R2 Standard,6.3 (9600),
+WS03WIN10,172.16.13.53,ws03win10.lab.test.com,Windows 10 Enterprise,10.0 (10240),
+WS02WIN7,172.16.13.50,WS02WIN7.lab.test.com,Windows 7 Enterprise,6.1 (7601),Service Pack 1
+WS01WIN7,172.16.13.52,WS01WIN7.lab.test.com,Windows 7 Enterprise,6.1 (7601),Service Pack 1
+DC01,172.16.13.10,dc01.lab.test.com,Windows Server 2012 R2 Standard,6.3 (9600),
 
 [*] Bye!                               
 ```
@@ -241,23 +239,23 @@ DC01,172.16.13.10,dc01.lab.ropnop.com,Windows Server 2012 R2 Standard,6.3 (9600)
 The tool allows for custom, fuzzy matching. You can perform a search and see results (DNs) with the `-s` option:
 
 ```
-$ ./wondowsearch.py -d lab.ropnop.com -u ropnop\\ldapbind -p GoCubs16 -s albert
+$ ./wondowsearch.py -d lab.test.com -u test\\ldapbind -p sam -s albert
 [+] No DC IP provided. Will try to discover via DNS lookup.
 [+] Using Domain Controller at: 172.16.13.10
 [+] Getting defaultNamingContext from Root DSE
-[+]     Found: DC=lab,DC=ropnop,DC=com
+[+]     Found: DC=lab,DC=test,DC=com
 [+] Attempting bind
 [+]     ...success! Binded as:
-[+]      u:ROPNOP\ldapbind
+[+]      u:test\ldapbind
 [+] Doing fuzzy search for: "albert"
 [+]     Found 6 results:
 
-CN=Kathi Albert,OU=US,OU=Users,OU=Lab,DC=lab,DC=ropnop,DC=com
-CN=Albert Woodell,OU=US,OU=Users,OU=Lab,DC=lab,DC=ropnop,DC=com
-CN=Albert Lyons,OU=US,OU=Users,OU=Lab,DC=lab,DC=ropnop,DC=com
-CN=Alberta Henshaw,OU=US,OU=Users,OU=Lab,DC=lab,DC=ropnop,DC=com
-CN=Alberta Taylor,OU=US,OU=Users,OU=Lab,DC=lab,DC=ropnop,DC=com
-CN=Alberto Mitchell,OU=US,OU=Users,OU=Lab,DC=lab,DC=ropnop,DC=com
+CN=Kathi Albert,OU=US,OU=Users,OU=Lab,DC=lab,DC=test,DC=com
+CN=Albert Woodell,OU=US,OU=Users,OU=Lab,DC=lab,DC=test,DC=com
+CN=Albert Lyons,OU=US,OU=Users,OU=Lab,DC=lab,DC=test,DC=com
+CN=Alberta Henshaw,OU=US,OU=Users,OU=Lab,DC=lab,DC=test,DC=com
+CN=Alberta Taylor,OU=US,OU=Users,OU=Lab,DC=lab,DC=test,DC=com
+CN=Alberto Mitchell,OU=US,OU=Users,OU=Lab,DC=lab,DC=test,DC=com
 
 [*] Bye!
 ```
@@ -265,23 +263,23 @@ CN=Alberto Mitchell,OU=US,OU=Users,OU=Lab,DC=lab,DC=ropnop,DC=com
 To query the DN and display the attributes, use the lookup option, `-l`. You can provide this with a full DN, or a search term. If the search matches more than one DN, the tool will prompt you for which to use:
 
 ```
-$ ./wondowsearch.py -d lab.ropnop.com -u ropnop\\ldapbind -p GoCubs16 -l albert --attrs telephoneNumber
+$ ./wondowsearch.py -d lab.test.com -u test\\ldapbind -p sam -l albert --attrs telephoneNumber
 [+] No DC IP provided. Will try to discover via DNS lookup.
 [+] Using Domain Controller at: 172.16.13.10
 [+] Getting defaultNamingContext from Root DSE
-[+]     Found: DC=lab,DC=ropnop,DC=com
+[+]     Found: DC=lab,DC=test,DC=com
 [+] Attempting bind
 [+]     ...success! Binded as:
-[+]      u:ROPNOP\ldapbind
+[+]      u:test\ldapbind
 [+] Searching for matching DNs for term: "albert"
 [+] Found 6 results:
 
-0: CN=Kathi Albert,OU=US,OU=Users,OU=Lab,DC=lab,DC=ropnop,DC=com
-1: CN=Albert Woodell,OU=US,OU=Users,OU=Lab,DC=lab,DC=ropnop,DC=com
-2: CN=Albert Lyons,OU=US,OU=Users,OU=Lab,DC=lab,DC=ropnop,DC=com
-3: CN=Alberta Henshaw,OU=US,OU=Users,OU=Lab,DC=lab,DC=ropnop,DC=com
-4: CN=Alberta Taylor,OU=US,OU=Users,OU=Lab,DC=lab,DC=ropnop,DC=com
-5: CN=Alberto Mitchell,OU=US,OU=Users,OU=Lab,DC=lab,DC=ropnop,DC=com
+0: CN=Kathi Albert,OU=US,OU=Users,OU=Lab,DC=lab,DC=test,DC=com
+1: CN=Albert Woodell,OU=US,OU=Users,OU=Lab,DC=lab,DC=test,DC=com
+2: CN=Albert Lyons,OU=US,OU=Users,OU=Lab,DC=lab,DC=test,DC=com
+3: CN=Alberta Henshaw,OU=US,OU=Users,OU=Lab,DC=lab,DC=test,DC=com
+4: CN=Alberta Taylor,OU=US,OU=Users,OU=Lab,DC=lab,DC=test,DC=com
+5: CN=Alberto Mitchell,OU=US,OU=Users,OU=Lab,DC=lab,DC=test,DC=com
 
 
 
